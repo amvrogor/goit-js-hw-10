@@ -15,6 +15,7 @@ const countryInfo = document.querySelector('.country-info');
 
 countryList.style.listStyle = 'none';
 countryList.style.fontSize = '12px';
+countryList.style.padding = '0px';
 
 // countryListItem.forEach(e => {
 //   e.style.display = 'flex';
@@ -45,9 +46,11 @@ function onInput(e) {
         countryInfo.innerHTML = createMarkupOne(data);
       }
     })
-    .catch(error =>
-      Notiflix.Notify.failure('Oops, there is no country with that name')
-    );
+    .catch(error => {
+      countryList.innerHTML = '';
+      countryInfo.innerHTML = '';
+      Notiflix.Notify.failure('Oops, there is no country with that name');
+    });
   // .finally(error => console.log(error));
 }
 
@@ -71,7 +74,7 @@ function createMarkupOne(arr) {
         capital,
         population,
         flags: { svg },
-        languages: { abbr: lang },
+        languages,
       }) =>
         `<div class="country-info-name" style="display:flex; align-items:end">
     <img src="${svg}" alt="${official}" width=100 style="margin-right:10px">
@@ -80,7 +83,9 @@ function createMarkupOne(arr) {
     <div class="country-info-text">
     <h2>Capital:<span class="country-info-item" style="font-weight: lighter"> ${capital}</span></h2>
     <h2>Population:<span class="country-info-item" style="font-weight: lighter"> ${population}</span></h2>
-    <h2>Languages:<span class="country-info-item" style="font-weight: lighter"> ${lang}</span></h2>
+    <h2>Languages:<span class="country-info-item" style="font-weight: lighter"> ${Object.values(
+      languages
+    ).join(', ')}</span></h2>
     </div>`
     )
     .join('');
